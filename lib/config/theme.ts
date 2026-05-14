@@ -1,0 +1,18 @@
+export const cargoFlowTheme = {
+  primary: "#0F766E",
+  primaryHover: "#115E59",
+  background: "#F8FAFC",
+  foreground: "#0F172A",
+  card: "#FFFFFF",
+  border: "#E2E8F0",
+  muted: "#F1F5F9",
+  mutedForeground: "#475569",
+  sidebarBackground: "#0B1120",
+  sidebarForeground: "#CBD5E1",
+  sidebarActive: "#0F766E",
+  sidebarActiveForeground: "#FFFFFF",
+  success: "#16A34A",
+  warning: "#F59E0B",
+  danger: "#DC2626",
+  info: "#0284C7",
+} as const;
