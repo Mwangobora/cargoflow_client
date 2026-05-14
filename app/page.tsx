@@ -1,17 +1,21 @@
-import { ThemeShowcase } from "@/components/examples/theme-showcase";
+import { Button } from "@/components/ui/button";
+import { PageContainer } from "@/src/components/layout/page-container";
+import { PageHeader } from "@/src/components/layout/page-header";
+import { ResponsiveDemo } from "@/src/components/layout/responsive-demo";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-background px-4 py-10 text-foreground md:px-8">
-      <div className="mx-auto w-full max-w-6xl space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight">CargoFlow Dashboard UI</h1>
-        <p className="text-sm text-muted-foreground">
-          Enterprise theme tokens are active across layout, status states, and reusable UI components.
-        </p>
-      </div>
-      <div className="mx-auto mt-8 w-full max-w-6xl">
-        <ThemeShowcase />
-      </div>
-    </main>
+    <PageContainer>
+      <PageHeader
+        title="CargoFlow Operations"
+        description="Manage shipments, trips, customers, and payments with responsive enterprise workflows."
+        actions={
+          <Button className="w-full bg-primary hover:bg-primary-hover sm:w-auto">
+            Create Shipment
+          </Button>
+        }
+      />
+      <ResponsiveDemo />
+    </PageContainer>
   );
 }
