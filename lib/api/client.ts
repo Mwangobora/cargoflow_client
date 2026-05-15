@@ -9,19 +9,9 @@ if (!baseURL) {
 
 export const apiClient = axios.create({
   baseURL,
+  withCredentials: true,
   timeout: 20_000,
   headers: {
     "Content-Type": "application/json",
   },
-});
-
-apiClient.interceptors.request.use((config) => {
-  // JWT token wiring point for authenticated requests.
-  if (typeof window !== "undefined") {
-    const token = window.localStorage.getItem("access_token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-  }
-  return config;
 });
