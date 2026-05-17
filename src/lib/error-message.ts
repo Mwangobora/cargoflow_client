@@ -1,6 +1,6 @@
 import type { AxiosError } from "axios";
 
-import type { ApiErrorResponse } from "@/src/types/auth";
+import type { ApiErrorResponse } from "@/src/types/api";
 
 function asFieldMessage(value: unknown): string | null {
   if (typeof value === "string") return value;
