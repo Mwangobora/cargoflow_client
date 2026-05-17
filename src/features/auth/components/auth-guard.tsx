@@ -12,21 +12,27 @@ type AuthGuardProps = {
 
 export function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
-  const { isLoading } = useCurrentUser();
+  const currentUserQuery = useCurrentUser();
   const { isAuthenticated, approvalStatus } = useAuthStore();
+  const isChecking = currentUserQuery.isLoading || currentUserQuery.isFetching;
+  const hasCurrentUser = currentUserQuery.isSuccess && !!currentUserQuery.data;
+  const isPending = hasCurrentUser
+    ? !Boolean(currentUserQuery.data?.is_active)
+    : approvalStatus === "pending";
+  const canAccess = hasCurrentUser || isAuthenticated;
 
   useEffect(() => {
-    if (isLoading) return;
-    if (!isAuthenticated) {
+    if (isChecking) return;
+    if (!canAccess) {
       router.replace("/login");
       return;
     }
-    if (approvalStatus === "pending") {
+    if (isPending) {
       router.replace("/pending-approval?source=login");
     }
-  }, [approvalStatus, isAuthenticated, isLoading, router]);
+  }, [canAccess, isChecking, isPending, router]);
 
-  if (isLoading || !isAuthenticated || approvalStatus === "pending") {
+  if (isChecking || !canAccess || isPending) {
     return <div className="p-6 text-sm text-muted-foreground">Checking your session...</div>;
   }
 

@@ -2,9 +2,16 @@ import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 
 const browserHost =
   typeof window !== "undefined" ? window.location.hostname : "localhost";
-const fallbackBaseUrl = `http://${browserHost}:8000/api/v1`;
 const envBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
-const normalizedBaseUrl = (envBaseUrl || fallbackBaseUrl).replace(/\/+$/, "");
+const shouldNormalizeHost =
+  typeof window !== "undefined" &&
+  envBaseUrl &&
+  (envBaseUrl.includes("localhost") || envBaseUrl.includes("127.0.0.1"));
+const devBaseUrl = shouldNormalizeHost
+  ? envBaseUrl.replace(/\/\/(localhost|127\.0\.0\.1):8000/i, `//${browserHost}:8000`)
+  : envBaseUrl;
+const fallbackBaseUrl = `http://${browserHost}:8000/api/v1`;
+const normalizedBaseUrl = (devBaseUrl || fallbackBaseUrl).replace(/\/+$/, "");
 
 let isRefreshing = false;
 let refreshPromise: Promise<boolean> | null = null;
