@@ -1,6 +1,8 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 
-const fallbackBaseUrl = "http://localhost:8000/api/v1";
+const browserHost =
+  typeof window !== "undefined" ? window.location.hostname : "localhost";
+const fallbackBaseUrl = `http://${browserHost}:8000/api/v1`;
 const envBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
 const normalizedBaseUrl = (envBaseUrl || fallbackBaseUrl).replace(/\/+$/, "");
 
@@ -16,7 +18,7 @@ export const axiosClient = axios.create({
 
 if (!envBaseUrl && typeof window !== "undefined") {
   console.warn(
-    "NEXT_PUBLIC_API_BASE_URL is missing. Falling back to http://localhost:8000/api/v1.",
+    `NEXT_PUBLIC_API_BASE_URL is missing. Falling back to ${normalizedBaseUrl}.`,
   );
 }
 

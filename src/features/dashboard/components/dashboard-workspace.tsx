@@ -2,13 +2,16 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { Tabs } from "@/components/ui/tabs";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { DashboardFilterParams, DashboardTabKey } from "@/src/types/dashboard";
 
 import { DashboardFilterBar } from "./dashboard-filter-bar";
 import { DashboardPanels } from "./dashboard-panels";
 import { DashboardTabs } from "./dashboard-tabs";
+
+const DASHBOARD_TAB_KEY = "cargoflow.dashboard.activeTab";
+const DASHBOARD_PERIOD_KEY = "cargoflow.dashboard.period";
 
 function toPeriodDates(period: string) {
   const now = new Date();
@@ -31,28 +34,38 @@ function toPeriodDates(period: string) {
 
 export function DashboardWorkspace() {
   const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState<DashboardTabKey>("overview");
-  const [period, setPeriod] = useState("today");
-  const [branchId, setBranchId] = useState("");
+  const [activeTab, setActiveTab] = useState<DashboardTabKey>(() => {
+    if (typeof window === "undefined") return "overview";
+    return (window.localStorage.getItem(DASHBOARD_TAB_KEY) as DashboardTabKey | null) || "overview";
+  });
+  const [period, setPeriod] = useState(() => {
+    if (typeof window === "undefined") return "today";
+    return window.localStorage.getItem(DASHBOARD_PERIOD_KEY) || "today";
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem(DASHBOARD_TAB_KEY, activeTab);
+  }, [activeTab]);
+
+  useEffect(() => {
+    window.localStorage.setItem(DASHBOARD_PERIOD_KEY, period);
+  }, [period]);
 
   const filters: DashboardFilterParams = useMemo(() => {
     const [start, end] = toPeriodDates(period);
     return {
       date_from: start.toISOString(),
       date_to: end.toISOString(),
-      branch_id: branchId.trim() || undefined,
     };
-  }, [period, branchId]);
+  }, [period]);
 
   const onRefresh = () => queryClient.invalidateQueries({ queryKey: ["dashboard"] });
 
   return (
-    <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as DashboardTabKey)} className="space-y-4">
+    <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as DashboardTabKey)} className="space-y-3">
       <DashboardFilterBar
         period={period}
-        branchId={branchId}
         onPeriodChange={setPeriod}
-        onBranchIdChange={setBranchId}
         onRefresh={onRefresh}
       />
       <DashboardTabs activeTab={activeTab} />

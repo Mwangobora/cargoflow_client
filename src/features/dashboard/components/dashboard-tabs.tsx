@@ -18,13 +18,17 @@ type DashboardTabsProps = {
 
 export function DashboardTabs({ activeTab }: DashboardTabsProps) {
   return (
-    <div className="overflow-x-auto pb-1">
-      <TabsList variant="line" className="w-max min-w-full justify-start bg-transparent">
+    <div className="overflow-x-auto">
+      <TabsList variant="line" className="w-max min-w-full justify-start border-b border-border px-0 pb-1">
         {tabs.map((tab) => (
           <TabsTrigger
             key={tab.key}
             value={tab.key}
-            className={activeTab === tab.key ? "text-primary" : "text-muted-foreground"}
+            className={
+              activeTab === tab.key
+                ? "rounded-md bg-primary/10 text-primary"
+                : "rounded-md text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+            }
           >
             {tab.label}
           </TabsTrigger>

@@ -1,8 +1,11 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 async function resolveAuthRedirect() {
-  const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api/v1").replace(/\/+$/, "");
+  const envBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+  const requestHost = (await headers()).get("host")?.split(":")[0] || "localhost";
+  const fallbackBaseUrl = `http://${requestHost}:8000/api/v1`;
+  const baseUrl = (envBaseUrl || fallbackBaseUrl).replace(/\/+$/, "");
   const cookieHeader = (await cookies()).toString();
 
   if (!cookieHeader) return "/login";

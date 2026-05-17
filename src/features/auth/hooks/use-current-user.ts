@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 import { useEffect } from "react";
 
 import { authApi } from "@/src/apis/auth.api";
@@ -20,9 +21,12 @@ export function useCurrentUser() {
       setAuth(query.data, !query.data.is_active);
     }
     if (query.isError) {
-      clearAuth();
+      const status = (query.error as AxiosError | undefined)?.response?.status;
+      if (status === 401 || status === 403) {
+        clearAuth();
+      }
     }
-  }, [clearAuth, query.data, query.isError, query.isSuccess, setAuth]);
+  }, [clearAuth, query.data, query.error, query.isError, query.isSuccess, setAuth]);
 
   return query;
 }

@@ -7,16 +7,17 @@ type PageHeaderProps = {
   description?: string;
   actions?: ReactNode;
   breadcrumbs?: ReactNode;
+  compact?: boolean;
 };
 
-export function PageHeader({ title, description, actions, breadcrumbs }: PageHeaderProps) {
+export function PageHeader({ title, description, actions, breadcrumbs, compact = false }: PageHeaderProps) {
   return (
-    <header className="space-y-3">
+    <header className={compact ? "space-y-1.5" : "space-y-3"}>
       {breadcrumbs ? <div>{breadcrumbs}</div> : null}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div className={`flex flex-col sm:flex-row sm:justify-between ${compact ? "gap-1.5 sm:items-center" : "gap-3 sm:items-start"}`}>
         <div className="space-y-1">
-          <h1 className={typography.pageTitle}>{title}</h1>
-          {description ? <p className={`text-muted-foreground ${typography.body}`}>{description}</p> : null}
+          <h1 className={compact ? "text-lg font-semibold tracking-tight sm:text-xl" : typography.pageTitle}>{title}</h1>
+          {description ? <p className={compact ? "text-xs text-muted-foreground sm:text-sm" : `text-muted-foreground ${typography.body}`}>{description}</p> : null}
         </div>
         {actions ? <div className="flex w-full gap-2 sm:w-auto sm:justify-end">{actions}</div> : null}
       </div>

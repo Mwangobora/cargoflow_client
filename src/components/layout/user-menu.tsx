@@ -26,7 +26,7 @@ export function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline" className="h-10 gap-2" />}>
+      <DropdownMenuTrigger render={<Button variant="outline" className="h-9 gap-2" />}>
         <UserCircle2 className="size-4" />
         <span className="hidden sm:inline">{user?.full_name ?? "User"}</span>
         <ChevronDown className="size-4" />

@@ -11,16 +11,16 @@ type DashboardStatCardProps = {
 
 export function DashboardStatCard({ title, value, helper, icon }: DashboardStatCardProps) {
   return (
-    <Card className="border-border bg-card shadow-sm">
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center justify-between text-sm text-muted-foreground">
+    <Card className="border-border bg-card shadow-md ring-1 ring-border/70">
+      <CardHeader className="pb-1">
+        <CardTitle className="flex items-center justify-between text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {title}
-          {icon}
+          {icon ? <span className="rounded-md bg-muted p-1.5 text-primary">{icon}</span> : null}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-2xl font-semibold tracking-tight text-foreground">{value}</p>
-        {helper ? <p className="mt-1 text-xs text-muted-foreground">{helper}</p> : null}
+        <p className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{value}</p>
+        {helper ? <p className="mt-1 text-xs font-medium text-muted-foreground">{helper}</p> : null}
       </CardContent>
     </Card>
   );

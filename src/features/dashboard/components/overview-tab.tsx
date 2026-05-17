@@ -26,10 +26,10 @@ export function OverviewTab({ filters }: OverviewTabProps) {
       description="Today’s operational and financial snapshot across your transport activities."
     >
       <ResponsiveGrid variant="cards">
-        <DashboardStatCard title="Today Shipments" value={data.shipments.today} icon={<Truck className="size-4" />} />
-        <DashboardStatCard title="Today Revenue" value={`TZS ${data.revenue.total_revenue.toLocaleString()}`} icon={<Banknote className="size-4" />} />
-        <DashboardStatCard title="In Transit" value={data.shipments.active} icon={<Activity className="size-4" />} />
-        <DashboardStatCard title="Pending Deliveries" value={data.shipments.pending} icon={<Clock3 className="size-4" />} />
+        <DashboardStatCard title="Today Shipments" value={data.shipments.today} helper="Updated in real time" icon={<Truck className="size-4" />} />
+        <DashboardStatCard title="Today Revenue" value={`TZS ${data.revenue.total_revenue.toLocaleString()}`} helper="Collections posted today" icon={<Banknote className="size-4" />} />
+        <DashboardStatCard title="In Transit" value={data.shipments.active} helper="Live cargo movement" icon={<Activity className="size-4" />} />
+        <DashboardStatCard title="Pending Deliveries" value={data.shipments.pending} helper="Needs completion" icon={<Clock3 className="size-4" />} />
       </ResponsiveGrid>
     </SummarySection>
   );
